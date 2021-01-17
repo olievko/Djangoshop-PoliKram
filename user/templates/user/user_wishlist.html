@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load static %}
+{% load currency %}
+
+{% block title %} {% trans 'Список Бажань' %} {% endblock %}
+
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+
+{% block content %}
+    <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="w3-container">
+            <!-- row -->
+            <div class="w3-row">
+                <div class="w3-col m3">
+                    {% include "user/user_panel.html" %}
+                </div>
+                <div class="w3-col m9">
+                        <div class="section-title">
+                            <h3 class="title">{% trans 'Лист Бажань' %}</h3>
+                        </div>
+                        <table class="w3-table w3-bordered">
+                            <tr>
+                                <th class="text-left">{% trans 'Зображення' %}</th>
+                                <th class="w3-center">{% trans 'Назва товару' %}</th>
+                                <th class="w3-center">{% trans 'Ціна' %}</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            {% for item in wishlist %}
+                                <tr>
+                                    <td class="w3-center" style="vertical-align: middle;">
+                                        <a href="/product/{{ item.product_id }}/{{ item.product.slug }}">
+                                            {% if item.variant.image_id > 0 %}
+                                                <img src="{{item.variant.image }}" alt="" style="height: 80px">
+                                            {% else %}
+                                                <img src="{{item.product.image.url}}" alt="" style="height: 80px">
+                                            {% endif %}
+                                        </a>
+                                    </td>
+                                    <td class="w3-center" style='padding-top: 20px; padding-bottom: 20px;'>{{ item.product.name}} {{ item.variant.size }}   {{ item.variant.color }}</td>
+                                    <td class="w3-center" style='padding-top: 20px; padding-bottom: 20px;'>{{ item.price|currency:request.session.currency}} {{ request.session.currency }}</td>
+                                    <td class="w3-center" style='padding-top: 20px; padding-bottom: 20px;'>
+                                        <a href="/user/deletefromwishlist/{{ item.id }}" onclick="return confirm('Delete ! Are you sure?')" class="w3-button w3-red"> {% trans 'Видалити' %}</a>
+                                    </td>
+                                    <td class="w3-center" style='padding-top: 20px; padding-bottom: 20px;'>
+                                        <a href="{{ item.product.get_absolute_url }}" class="w3-button w3-green">{% trans 'Деталі' %}</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock content %}

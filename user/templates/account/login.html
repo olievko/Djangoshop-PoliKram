@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load static %}
+{% block stylesheet %}<link rel="stylesheet" href="{% static 'css/account.css' %}">{% endblock %}
+{% block title %}Авторизація{% endblock title%}
+
+
+{% block content %}
+
+<form class="modal-content animate" action='.' method='POST'>
+    <div class="w3-container">
+        <div class="section-title">
+            <h3 class='title'>{% trans 'Авторизація' %}</h3>
+        </div>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">{% trans 'Увійти' %}</button>
+        <label><input type="checkbox" checked="checked" name="remember"> {% trans "Запам'ятати мене" %}</label>
+        <div class="w3-container" style="background-color:#f1f1f1">
+            <button type="button" class="button cancelbtn"><a href="/" >{% trans 'Відмінити' %}</a></button>
+            <span class="psw">
+                <a href="{% url 'signup' %}">{% trans 'Реєстрація?' %}</a>
+                {% trans 'або' %}
+                <a href="{% url 'password_reset' %}">{% trans 'Забув пароль?' %}</a>
+            </span>
+        </div>
+    </div>
+</form>
+
+{% endblock content %}

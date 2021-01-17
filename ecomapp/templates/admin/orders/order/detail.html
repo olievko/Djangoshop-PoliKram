@@ -1,0 +1,108 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% load currency %}
+{% load static %}
+{% block extrastyle %}
+  <link rel="stylesheet" type="text/css" href='{% static "css/admin.css" %}' />
+{% endblock %}
+
+{% block title %}
+  Order {{ order.id }} {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Начало</a> &rsaquo; &rsaquo; &rsaquo; Деталі
+  </div>
+{% endblock %}
+{% block content %}
+<h1>Номер замовлення № {{ order.id }}</h1>
+<h1>Код замовлення - {{ order.code }}</h1>
+<ul class="object-tools">
+  <li>
+    <a href="#" onclick="window.print();">Print order</a>
+  </li>
+</ul>
+<table>
+  <tr>
+    <th>{% trans 'Створено' %}</th>
+    <td>{{ order.created }}</td>
+  </tr>
+  <tr>
+    <th>{% trans 'Оновлено' %}</th>
+    <td>{{ order.updated }}</td>
+  </tr>
+  <tr>
+    <th>{% trans "Клієнт" %}</th>
+    <td>{{ order.last_name }} {{ order.first_name }} {{ order.father_name }}</td>
+  </tr>
+  <tr>
+    <th>E-mail</th>
+    <td><a href="mailto:{{ order.email }}">{{ order.email }}</a></td>
+  </tr>
+  <tr>
+    <th>{% trans 'Телефон' %}</th>
+    <td>{{ order.phone }}</td>
+  </tr>
+  <tr>
+    <th>{% trans 'Місто' %}</th>
+    <td>{{ order.city }}</td>
+  </tr>
+  {% if order.street %}
+  <tr>
+      <th>{% trans 'Доставка на адресу' %}</th>
+      <td>{{ order.street }} {{ order.house }} {{ order.apartment }}</td>
+    </tr>
+  <tr>
+  {% else %}
+  <tr>
+      <th>{% trans 'Склад Нової пошти' %}</th>
+      <td>{{ order.warehouse_number }}</td>
+  </tr>
+  {% endif %}
+  <tr>
+    <th>{% trans 'Статус' %}</th>
+    <td>{% if order.paid %}{% trans 'Сплачено' %}{% else %}{% trans 'Очікування платежу' %}{% endif %}</td>
+  </tr>
+</table>
+
+<div class="module">
+  <h2>{% trans 'Замовлені товари' %}</h2>
+  <div class="tabular">
+    <table style="width:100%">
+      <thead>
+        <tr>
+          <th>{% trans 'Товар' %}</th>
+          <th>{% trans 'Ціна одиниці' %}</th>
+          <th>{% trans 'Кількість' %}</th>
+          <th>{% trans 'Ціна загальна' %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items.all %}
+          <tr class='row{% cycle "1" "2" %}'>
+            <td>{{ item.product.name }}</td>
+            <td class="num">{{ item.price|currency:request.session.currency }} {{ request.session.currency }}</td>
+            <td class="num">{{ item.quantity }}</td>
+            <td class="num">{{ item.get_cost|currency:request.session.currency }} {{ request.session.currency }}</td>
+          </tr>
+        {% endfor %}
+        <tr class="total">
+          <td colspan="3">{% trans 'Сума' %}</td>
+          <td class="num"><b>{{ order.get_total_cost|currency:request.session.currency }} {{ request.session.currency }}</b></td>
+        </tr>
+        {% if order.coupon %}
+        <tr class="total">
+          <td colspan="3">{% trans 'Знижка' %}</td>
+          <td class="num"><b>- {{order.get_discount|currency:request.session.currency }} {{ request.session.currency }}</b></td>
+        </tr>
+        <tr class="total">
+          <td colspan="3">{% trans 'Разом' %}</td>
+          <td class="num"><b>{{ order.get_total_cost_after_discount|currency:request.session.currency }} {{ request.session.currency }}</b></td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

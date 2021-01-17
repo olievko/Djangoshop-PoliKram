@@ -1,0 +1,205 @@
+
+
+/* MOBILE */
+.header__mobile { 
+    /* position: fixed;
+    top: 0; */
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    max-width: 1920px;
+    display: grid;
+    background-color: white;
+    box-shadow: 0px var(--px2) var(--px4) rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+
+/* TOP BLOCK */
+.header__mobile .top-block {
+    background-color: var(--color-1);
+}
+.header__mobile .top-block .content {
+    display: grid;
+    grid-template-columns: var(--px188) 1fr var(--px188);
+    align-items: center;
+    grid-gap: var(--px16);
+}
+.header__mobile .top-block .content .actions, 
+.header__mobile .top-block .content .actions span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header__mobile .top-block .content .actions span {
+    margin-left: var(--px16);
+}
+.header__mobile .top-block .content .actions span:first-child {
+    margin-left: 0px;
+
+}
+
+.action {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header__wishlist {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@media(max-width: 840px) {
+    .header__mobile .top-block .content {
+        display: grid;
+        grid-template-columns: var(--px48) auto var(--px48);
+        grid-gap: var(--px16);
+        padding: var(--px16) 0;
+    }
+    .header__wishlist p {
+        display: none;
+    }
+    .header__wishlist img {
+        margin-right: 0px !important;
+    }
+}
+
+
+.header__mobile .top-block .content .action img {
+    width: var(--px16);
+    height: var(--px16);
+    object-fit: contain;
+    margin-right: var(--px8);
+}
+
+
+/* MAIN BLOCK */
+.header__mobile .main-block .content {
+    display: grid;
+    grid-template-columns: 1fr minmax(var(--px120), var(--px240)) 1fr;
+    grid-gap: var(--px24);
+    justify-content: center;
+    align-items: center;
+    padding: 16px 0;
+}
+.header__mobile .main-block img.ico {
+    width: var(--px24);
+    height: var(--px24);
+    object-fit: contain;
+    object-position: center;
+}
+.header__mobile .logo {
+    width: 100%;
+    height: var(--px48);
+    object-fit: contain;
+    object-position: center;
+}
+
+.header__mobile .main-block .content .left,
+.header__mobile .main-block .content .left > span {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.header__mobile .main-block .content .left > span:first-child,
+.header__mobile .main-block .content .right > span:first-child {
+    margin-right: 16px;
+}
+.header__mobile .main-block .content .right,
+.header__mobile .main-block .content .right > span {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+.header__mobile .main-block .content .right .prodfile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.header__mobile .main-block .content .right .prodfile img {
+    padding-right: 16px;
+}
+
+@media(max-width: 960px) {
+    .header__mobile .main-block .content .left > span p,
+    .header__mobile .main-block .content .right > span p {
+        display: none;
+    }
+    /* .header__mobile .main-block .content .right .prodfile a,
+    .header__mobile .main-block .content .right .prodfile span {
+        display: none;
+    } */
+    .header__mobile .main-block .content .right .prodfile img {
+        padding-right: 0px;
+    }
+}
+
+
+
+/* PHONES POPUP */
+#mobile-header-hidden-phones {
+    position: absolute;
+    top: var(--px32);
+    background-color: white;
+    width: var(--px220);
+    display: none;
+    visibility: hidden;
+    grid-gap: var(--px4);
+    box-shadow: 0px var(--px4) var(--px8) rgba(0, 0, 0, 0.15);
+    border-radius: var(--px4);
+    z-index: 2000000;
+    overflow: hidden;
+    padding: var(--px8);
+}
+#mobile-header-hidden-phones.active {
+    display: grid;
+    visibility: visible;
+}
+
+#mobile-header-hidden-phones a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--px8) var(--px12);
+    cursor: pointer;
+}
+#mobile-header-hidden-phones a span {
+    color: #333;
+}
+
+#mobile-header-hidden-phones a:hover{
+    background-color: var(--color-1-50);
+    color: var(--color-2);
+}
+
+
+.user_profile_icon {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+@media(max-width: 960px) {
+    .user_profile_icon span {
+        display: none;
+    }
+    .header__wishlist p {
+        display: none;
+    }
+    .header__profile__text {
+        display: none;
+    }
+}
+@media(max-width: 540px) {
+    .header_phone_icon > span {
+        display: none !important;
+    }
+    #mobile-header-hidden-phones {
+        left: 0;
+    }
+}

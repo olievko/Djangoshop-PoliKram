@@ -1,0 +1,45 @@
+{% load i18n %}
+{% load tags %}
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
+  <div class="w3-container w3-display-container w3-padding-16">
+    <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+    {% get_setting_sidebar %}
+  </div>
+  <div class="w3-container">
+      <div class="section-title"><strong class="text-uppercase"><a href="{% url 'base' %}">{% trans 'Категорії' %}</a></strong></div>
+      {% load mptt_tags %}
+      {% get_category as nodes %}
+      <ul>
+      {% recursetree nodes %}
+            <li>
+                {% if not node.is_leaf_node %}
+                    <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
+                        {{ node.name }} <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul id="demoAcc" class="w3-bar-block w3-hide w3-padding">
+                        {% for child in node.children.all %}
+                        <a href="{{ child.get_absolute_url }}" class="w3-bar-item w3-button"> {{ child.name }}</a>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                     <a href="{{ node.get_absolute_url }}" class="w3-bar-item w3-button"><i class="{{ node.icon }}"></i>
+                         {{ node.name }}
+                     </a>
+                {% endif %}
+            </li>
+      {% endrecursetree %}
+      </ul>
+      <ul>
+         <hr>
+         <li class="w3-bar-item w3-button text-uppercase">
+             <a href="{% url 'shipmentpayment' %}">{% trans 'Доставка та оплата' %}</a>
+         </li>
+         <li class="w3-bar-item w3-button text-uppercase">
+             <a href="{% url 'warranty' %}">{% trans "Гарантія" %}</a>
+         </li>
+         <li class="w3-bar-item w3-button text-uppercase">
+             <a href="{% url 'purchasereturn' %}">{% trans "Повернення товару" %}</a>
+         </li>
+      </ul>
+  </div>
+</nav>

@@ -1,0 +1,235 @@
+{% extends "index.html" %}
+{% load i18n %}
+{% load currency %}
+{% load static %}
+{% block title %} {{ product.name }} {% endblock %}
+{% block description %} {{ product.meta_description }} {% endblock %}
+{% block keywords %} {{ product.meta_keywords }} {% endblock %}
+{% block stylesheet %}
+  <script src="/static/js/jquery-2.2.4.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="/">{% trans 'Головна' %}</a></li>
+            <li><a href="/category/{{ product.category.slug }}">{{ product.category.name }}</a></li>
+            <li class="active">{{ product.name }}</li>
+        </ul>
+    </div>
+</div>
+<!-- /BREADCRUMB -->
+
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="w3-container">
+        <!-- row -->
+        <div class="w3-row">
+            <!--  Product Details -->
+            <div class="product product-details clearfix">
+                {% include 'includes/product_gallery.html' %}
+                <div class="w3-col l6 s12">
+                    <div class="w3-container">
+                    <div class="product-body">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <hr>
+                        <div>
+                            <div class="product-rating">
+                                <i class="fa fa-star{% if product.avaregereview < 1 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if product.avaregereview < 2 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if product.avaregereview < 3 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if product.avaregereview < 4 %}-o empty{% endif %}"></i>
+                                <i class="fa fa-star{% if product.avaregereview < 5 %}-o empty{% endif %}"></i>
+                                {{ product.avaregereview |stringformat:".2f"}}
+                            </div>
+                            <a href="#Відгуки"> {{ product.countreview}} {% trans 'Відгуки / Додати Вігук' %}</a>
+                        </div>
+
+                        <p><strong>{% trans 'Бренд:' %}</strong> {{ product.brand }}</p>
+                        <p><strong>{% trans 'Артикул:' %}</strong> {{ product.articul }}</p>
+                        <p><strong>{% trans 'Країна виробник:' %}</strong> {{ product.country }}</p>
+                        <p><strong>{% trans 'Гарантія:' %}</strong> {{ product.warranty }} {% trans 'місяців' %}</p>
+
+                        <script>
+                                  $(document).on('change', '#post-form',function(e){
+                                      e.preventDefault();
+                                      $.ajax({
+                                          type:'POST',
+                                          url:'{% url "ajaxcolor" %}',
+                                          data:{
+                                              productid:$('#productid').val(),
+                                              size:$('#size').val(),
+                                              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                                              action: 'post'
+                                          },
+                                          data_type : 'html',
+                                          success: function (data) {
+                                              console.log("success");
+                                              $('#appendHere').html(data.rendered_table);
+                                          },
+                                          error: function (data) {
+                                              alert("Got an error dude " + data);
+                                          }
+                                      });
+                                  });
+                              </script>
+
+                        <div class="product-btns">
+                                <div class="w3-row">
+                                    {% if product.variant == 'Size-Color' %}
+                                    <div class="product-options">
+                                        <div class="size-option">
+                                            <form method="POST" id="post-form">
+                                                <input type="hidden" name="productid" id="productid" value="{{ product.id }}">
+                                                <span class="text-uppercase"><b>{% trans 'Розмір:' %}</b></span>
+                                                {% csrf_token %}
+                                                <select name="size" id="size">
+                                                    {% for rs in sizes %}
+                                                    <option {% if variant.size_id == rs.size_id %} selected {% endif %} value="{{ rs.size_id }}">
+                                                        {{ rs.size.name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </form>
+                                        </div>
+                                        <form method="post" action="?q=selectvariant" id="post-color">
+                                            {% csrf_token %}
+                                            <div id="appendHere">
+                                                <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                                <ul class="color-option">
+                                                    <li><span class="text-uppercase"><b>{% trans 'Колір:' %}</b></span></li>
+                                                    {% for rs in colors %}
+                                                    <input type="radio"  {% if variant.id == rs.id %} checked {% endif %}
+                                                           name="variantid"
+                                                           id="variantid"
+                                                           value="{{ rs.id }}"
+                                                           onchange="this.form.submit();">
+                                                    <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                                        <a style="background-color:{{ rs.color.code }}; color: #b3b3b3; width: 90px">
+                                                            {{ rs.price|currency:request.session.currency }} {{ request.session.currency }} {{ rs.color }}
+                                                        </a>
+                                                        <img src="{{ rs.image }}" style="height: 70px">
+                                                    </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    {% elif product.variant == 'Size' %}
+                                    <form method="post" action="?q=selectvariant" id="post-color">
+                                        {% csrf_token %}
+                                        <div id="appendHere">
+                                            <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                            <ul class="size-option">
+                                                <li><span class="text-uppercase"><b>{% trans 'Розмір:' %}</b></span></li>
+                                                {% for rs in sizes %}
+                                                <input type="radio"  {% if variant.id == rs.id %} checked {% endif %}
+                                                       name="variantid"
+                                                       id="variantid"
+                                                       value="{{ rs.id }}"
+                                                       onchange="this.form.submit();">
+                                                <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                                    <a style=" color: #204d74;  width: 90px">
+                                                        {{ rs.size }}<br>
+                                                        {{ rs.price|currency:request.session.currency }} {{ request.session.currency }}
+                                                    </a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </form>
+                                    {% elif product.variant == 'Color' %}
+                                    <form method="post" action="?q=selectvariant" id="post-color">
+                                        {% csrf_token %}
+                                        <div id="appendHere" class="product-options">
+                                            <input type="hidden" name="size" id="size" value="{{ size_id }}">
+                                            <ul class="color-option" >
+                                                <li><span class="text-uppercase"><b>{% trans 'Колір:' %}</b></span></li>
+                                                {% for rs in colors %}
+                                                <input type="radio" {% if variant.id == rs.id %} checked {% endif %}
+                                                       name="variantid"
+                                                       id="variantid"
+                                                       value="{{ rs.id }}"
+                                                       onchange="this.form.submit();">
+
+                                                <li  {% if variant.id == rs.id %} class="active" {% endif %}>
+                                                    <a style="background-color:{{ rs.color.code }}; color: #b3b3b3; width: 90px;">
+                                                        {{ rs.price|currency:request.session.currency }} {{ request.session.currency }} {{ rs.color }}
+                                                    </a>
+                                                    <br>
+                                                    <img src="{{ rs.image }}" style="height: 70px">
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </form>
+                                    {% endif %}
+
+                                    <hr>
+                                    {% if product.variant != 'None' %}
+                                    <form action="{% url 'add_to_cart' product.id %}" method="post" id="addchart-form">
+                                        {% csrf_token %}
+
+                                        <input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
+
+                                        {% if variant.quantity > 0 %}
+                                        <p><i class="fa fa-check" style="color:green"></i><strong> {% trans 'В наявності' %}</strong></p>
+                                        {% else %}
+                                        <p><i class="fa fa-ban" style="color:red;"></i><strong> {% trans 'Під замовлення' %}</strong></p>
+                                        {% endif %}
+                                        <h3 class="product-price">
+                                            {{ variant.price|currency:request.session.currency }} {{ request.session.currency }}
+                                        </h3>
+                                        <div class="qty-input">
+                                            <input class="input" name="quantity" type="number" value="1" min="1" max="{{ variant.quantity }}">
+                                            <button type="submit" {% if variant.quantity < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                                            <i class="fa fa-shopping-cart "></i> {% trans 'В кошик' %}
+                                            </button>
+                                        </div>
+                                    </form>
+                                    {% else %}
+                                    <form action="{% url 'add_to_cart' product.id %}" method="post" id="addchart-form">
+                                        {% csrf_token %}
+
+                                        {% if product.stock > 0 %}
+                                        <p><i class="fa fa-check" style="color:green;"></i><strong> {% trans 'В наявності' %}</strong></p>
+                                        {% else %}
+                                        <p><i class="fa fa-ban" style="color:red;"></i><strong> {% trans 'Під замовлення' %}</strong></p>
+                                        {% endif %}
+
+                                        <h3 class="product-price">
+                                            {{ product.price|currency:request.session.currency }} {{ request.session.currency }}
+                                        </h3>
+
+                                        <div class="qty-input">
+                                            <input class="input" name="quantity" type="number" value="1" min="1" max="{{ product.stock }}">
+                                            <button type="submit" {% if product.stock < 1  %} disabled {% endif %} class="primary-btn add-to-cart">
+                                                <i class="fa fa-shopping-cart "></i> {% trans 'В кошик' %}
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            <br>
+                            <div class="pull-right">
+                                <a href="/user/addtowishlist/{{ product.id }}" class="main-btn icon-btn"><i class="fa fa-heart"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include 'includes/product_table.html' %}
+
+        </div>
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+{% endblock content %}

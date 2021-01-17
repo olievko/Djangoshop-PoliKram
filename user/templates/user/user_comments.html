@@ -1,0 +1,56 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% block title %} {% trans 'Мої Коментарі' %} {% endblock %}
+
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block content %}
+<!-- section -->
+<div class="section">
+	<!-- container -->
+	<div class="w3-container">
+        <div class="w3-row">
+            <div class="w3-col m3">
+                {% include "user/user_panel.html" %}
+            </div>
+            <div class="w3-col m9">
+                <div class="section-title">
+                    <h4 class="title">{% trans 'Мої Коментарі' %}</h4>
+                </div>
+                <table class="w3-table w3-bordered">
+                    <tr>
+                        <th class="text-left">{% trans 'Товар' %}</th>
+                        <th class="w3-center">{% trans 'Оцінка' %}</th>
+                        <th class="w3-center">{% trans 'Тема' %}</th>
+                        <th class="w3-center">{% trans 'Коментар' %}</th>
+                        <th class="w3-center">{% trans 'Статус' %}</th>
+                        <th class="w3-center">{% trans 'Дата' %}</th>
+                        <th></th>
+                    </tr>
+                    {% for rs in comments %}
+                    <tr>
+                        <td class="text-left">
+                            <a href="/product/{{ rs.product_id }}/{{ rs.product.slug }}">
+                                <strong> {{ rs.product.name}}</strong>
+                            </a>
+                        </td>
+                        <td class="w3-center" style='vertical-align: middle;'>{{ rs.rating}} </td>
+                        <td class="w3-center" style='vertical-align: middle;'>{{ rs.subject}} </td>
+                        <td class="w3-center" style='vertical-align: middle;'>{{ rs.comment}} </td>
+                        <td class="w3-center" style='vertical-align: middle;'>{{ rs.status}} </td>
+                        <td class="w3-center" style='vertical-align: middle;'>{{ rs.created}} </td>
+                        <td class="w3-center" style='vertical-align: middle;'>
+                            <a class="w3-button w3-red" href="/user/deletecomment/{{ rs.id }}" onclick="return confirm('Will be Delete ! Are you sure?')">{% trans 'Видалити' %}</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /section -->
+{% endblock content %}

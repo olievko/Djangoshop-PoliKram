@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="w3-container w3-black w3-padding-32" id="subscribe">
+    <h1 style="color: white;">{% trans 'Підписка' %}</h1>
+    <form method="post" action="{% url 'email-list-signup' %}">
+        {% csrf_token %}
+        <label>{% trans 'Щоб отримати спеціальні пропозиції:' %}</label>
+        {{ signup_form.as_p }}
+        <button type="submit" class="w3-button w3-red w3-margin-bottom">{% trans 'Підписатися' %}</button>
+    </form>
+</div>

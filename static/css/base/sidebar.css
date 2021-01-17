@@ -1,0 +1,64 @@
+:root {
+    --sidebar-width: 420px;
+    --sidebar-inner-padding: 16px;
+    --cart-counter-grid-box: 32px;
+    --cart-counter-grid-gap: 4px;
+}
+
+.sidebar-outer {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    /* max-width: calc(100% - var(--sidebar-width)); */
+    visibility: hidden;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 10000280;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar {
+    position: fixed;
+    display: grid;
+    grid-template-rows: 80px 1fr 96px;
+    width: 94%;
+    max-width: var(--px420);
+    height: 100vh;
+    top: 0;
+    right: calc((-1) * var(--px420));
+    background-color: white;
+    box-shadow: 0 var(--px8) var(--px16) rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    transition: right 0.3s ease-in-out;
+}
+.sidebar .close {
+    position: absolute;
+    width: var(--px16);
+    height: var(--px16);
+    margin: var(--px8);
+    right: var(--px24);
+    top: var(--px24);
+    opacity: 0.25;
+}
+.sidebar > .title {
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: var(--color-1-50);
+}
+
+.sidebar > .main {
+    width: calc(100% - var(--sidebar-inner-padding) * 2);
+    padding: var(--sidebar-inner-padding);
+    overflow-y: scroll;
+}
+
+.sidebar > .actions {
+    width: calc(100% - var(--sidebar-inner-padding));
+    padding: var(--sidebar-inner-padding);
+    height: 100%;
+    box-shadow: 0 var(--px8) var(--px16) rgb(0, 0, 0, 0.15);
+}

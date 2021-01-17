@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load currency %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="w3-container">
+	    <!-- row -->
+        <div class="w3-row">
+
+            <div class="w3-col m3">
+                {% include "user/user_panel.html" %}
+            </div>
+
+            <div class="w3-col m9">
+
+                <div class="section-title">
+                    <h3 class="title">{% trans 'Мій Профіль' %}</h3>
+                </div>
+
+                <table class="shopping-cart-table table">
+                    <tr>
+                        <td><img src="{{ profile.image.url }}" style="border-radius: 45px; height: 200px "></td>
+                        <th class="text-left">
+                            <a href="/user/update" class="w3-button w3-green">{% trans 'Оновити Профіль' %}</a>
+                            <a href="/user/password_change" class="w3-button w3-green">{% trans 'Змінити Пароль' %}</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-left">{% trans "Ім'я По-батькові Прізвище" %}</th>
+                        <td class="text-left">{{ user.first_name}} {{ user.last_name}} {{ profile.father_name }} </td>
+                    </tr>
+                    <tr>
+                        <th class="text-left">Email</th>
+                        <td class="text-left">{{ profile.user.email}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left">{% trans 'Телефон' %}</th>
+                        <td class="text-left">{{ profile.phone}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left">{% trans 'Країна' %}</th>
+                        <td class="text-left">{{ profile.country}}</td>
+                    </tr>
+                    <tr>
+                        <th class="text-left">{% trans 'Населений пункт' %}</th>
+                        <td class="text-left">{{ profile.city}}</td>
+                    </tr>
+                    {% if profile.street %}
+                    <tr>
+                        <th class="text-left">{% trans 'Адреса доставки' %}</th>
+                        <td class="text-left">{{ profile.street }} {{ profile.house }} {% if profile.apartment %} / {{profile.apartment}} {% endif %}</td>
+                    </tr>
+                    {% endif %}
+                    {% if profile.warehouse_number %}
+                    <tr>
+                        <th class="text-left">{% trans 'Склад Нової пошти ' %}</th>
+                        <td class="text-left">{{ profile.warehouse_number}}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->
+
+{% endblock content %}

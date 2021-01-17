@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load static %}
+<div class="w3-col s4">
+    <div class="section-title">
+        <h4 class="title">{% trans 'Інформація' %}</h4>
+    </div>
+    <p><a href="{% url 'aboutus' %}">{% trans 'Про компанію' %}</a></p>
+    <p><a href="{% url 'shipmentpayment' %}">{% trans 'Доставка та оплата' %}</a></p>
+    <p><a href="{% url 'warranty' %}">{% trans 'Гарантія' %}</a></p>
+    <p><a href="#">{% trans 'Повернення товару' %}</a></p>
+    <p><a href="#">{% trans 'Сервісні центри' %}</a></p>
+</div>
+<div class="w3-col s4 w3-justify">
+    <div class="section-title">
+        <h4 class="title">{% trans 'Інтернет крамниця' %}</h4>
+    </div>
+    {% if setting.address %}
+    <p><i class="fa fa-fw fa-map-marker"></i> {{ setting.address }}</p>
+    {% endif %}
+    {% if setting.phone %}
+    <p><i class="fa fa-fw fa-phone"></i> {{ setting.phone }}</p>
+    {% endif %}
+    {% if setting.email %}
+    <p><i class="fa fa-fw fa-envelope"></i> {{ setting.email }}</p>
+    {% endif %}
+    <div class="section-title">
+        <h4 class="title">{% trans 'Способи оплати' %}</h4>
+    </div>
+    <p><img src="{% static 'img/icons/visa.png' %}"> VISA</p>
+    <p><img src="{% static 'img/icons/mastercard.png' %}"> MasterCard</p>
+    <p><img src="{% static 'img/icons/privat24.png' %}"> Приват24</p>
+    <p><img src="{% static 'img/icons/liqpay.png' %}"> LIQPAY</p>
+    <div class="section-title">
+        <h4 class="title">{% trans 'Соціальні мережі' %}</h4>
+    </div>
+    {% if setting.facebook %}
+    <a href="{{ setting.facebook }}"><i class="fa fa-facebook-official w3-hover-opacity w3-large"></i></a>
+    {% endif %}
+    {% if setting.instagram %}
+    <a href="{{ setting.instagram }}"><i class="fa fa-instagram w3-hover-opacity w3-large"></i></a>
+    {% endif %}
+    {% if setting.youtube %}
+    <a href="{{ setting.youtube }}"><i class="fa fa-youtube w3-hover-opacity w3-large"></i></a>
+    {% endif %}
+    {% if setting.twitter %}
+    <a href="{{ setting.twitter }}"><i class="fa fa-twitter w3-hover-opacity w3-large"></i></a>
+    {% endif %}
+</div>

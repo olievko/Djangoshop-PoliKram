@@ -1,0 +1,19 @@
+
+<h3 class="w3-wide"><a href="/" style="text-decoration:none;"><b>{{ setting.title }}</b></a></h3>
+        <div class="w3-display-container">
+            {% if setting.phone %}
+            <p><i class="fa fa-fw fa-phone"></i> {{setting.phone}}</p>
+            {% endif %}
+            {% if setting.facebook %}
+            <a href="{{ setting.facebook }}"><i class="fa fa-facebook-official w3-hover-opacity w3-large"></i></a>
+            {% endif %}
+            {% if setting.instagram %}
+            <a href="{{ setting.instagram }}"><i class="fa fa-instagram w3-hover-opacity w3-large"></i></a>
+            {% endif %}
+            {% if setting.youtube %}
+            <a href="{{ setting.youtube }}"><i class="fa fa-youtube w3-hover-opacity w3-large"></i></a>
+            {% endif %}
+            {% if setting.twitter %}
+            <a href="{{ setting.twitter }}"><i class="fa fa-twitter w3-hover-opacity w3-large"></i></a>
+            {% endif %}
+        </div>

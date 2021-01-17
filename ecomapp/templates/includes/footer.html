@@ -1,0 +1,15 @@
+{% load i18n %}
+{% load static %}
+{% load contact_form %}
+{% load tags %}
+<footer class="w3-padding-64 w3-light-grey w3-small w3-center" id="footer">
+
+    <div class="w3-row-padding">
+        <div class="w3-col s4">
+                 <div class="section-title"><h4 class="title">{% trans "Напишіть нам" %}</h4></div>
+                {% contact_form %}
+        </div>
+    {% get_setting_footer %}
+    </div>
+
+</footer>

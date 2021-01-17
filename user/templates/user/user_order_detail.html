@@ -1,0 +1,122 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load currency %}
+{% load static %}
+
+{% block title %} {% trans 'Деталі замовлення' %} {% endblock %}
+
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Головна' %}</a></li>
+				<li><a href="/user/orders/">{% trans 'Історія замовлень' %}</a></li>
+                <li class="active">{% trans 'Деталі замовлення' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+<!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="w3-container">
+            <!-- row -->
+            <div class="w3-row">
+				<div class="w3-col m3">
+                    {% include "user/user_panel.html" %}
+                </div>
+				<div class="w3-col m9">
+					<div class="section-title">
+						<h3 class="title">{% trans 'Деталі замовлення - ' %} {{ order.id }}</h3>
+					</div>
+					<div class="w3-container">
+						<table class='w3-table w3-bordered'>
+							{% for item in order_item %}
+							<tr>
+								<td style="vertical-align: middle;">{{ item }}</td>
+								<td>
+									<a href="{{ item.product.get_absolute_url }}">
+										<img src="{% if item.product.image %}
+						                   				{{ item.product.image.url }}
+						                   				{% else %}
+						                   				{% static 'img/no_image.png' %}
+						                   				{% endif %}" alt="" style="height: 80px">
+									</a>
+								</td>
+								<td style="vertical-align: middle;">{{ item.product }}</td>
+								<td style="vertical-align: middle;">{{ item.quantity }}</td>
+								<td style="vertical-align: middle;">x</td>
+								<td style="vertical-align: middle;">{{ item.price|currency:request.session.currency }}{{ request.session.currency }}</td>
+							</tr>
+							{% endfor %}
+							</table>
+							<div class="w3-row">
+								<div class="w3-col m4" style="float:right;">
+									<table class='w3-table w3-bordered'>
+									<tr>
+										<td>{% trans 'Сума' %}</td>
+										<td colspan="4"></td>
+										<td><b>{{ order.get_total_cost|floatformat:"2"|currency:request.session.currency }}{{ request.session.currency }}</b></td>
+									</tr>
+									{% if order.coupon %}
+									<tr>
+										<td>{% trans 'Знижка' %}</td>
+										<td colspan="4"></td>
+										<td><b>- {{ order.get_discount|floatformat:"2"|currency:request.session.currency }}{{ request.session.currency }}</b></td>
+									</tr>
+									<tr>
+										<td>{% trans 'Разом' %}</td>
+										<td colspan="4"></td>
+										<td><b>{{ order.get_total_cost_after_discount|floatformat:"2"|currency:request.session.currency }}{{ request.session.currency }}</b></td>
+									</tr>
+									{% endif %}
+									</table>
+								</div>
+							</div>
+						<div class="section-title">
+							<h4 class="title">{% trans 'Отримувач замовлення' %}</h4>
+						</div>
+						<table class="shopping-cart-table table">
+							<tr>
+								<th class="text-left">{% trans "Ім'я По-батькові та Прізвище:" %}</th>
+								<td class="text-left">{{ order.first_name }} {{ order.father_name }} {{ order.last_name }}</td>
+							</tr>
+							<tr>
+								<th class="text-left">Email:</th>
+								<td class="text-left">{{ order.email }}</td>
+							</tr>
+							<tr>
+								<th class="text-left">{% trans 'Телефон:' %}</th>
+								<td class="text-left">{{ order.phone }}</td>
+							</tr>
+							<tr>
+								<th class="text-left">{% trans 'Адреса доставки:' %}</th>
+								<td class="text-left">
+									{% if order.warehouse_number %}
+										{{ order.warehouse_number }}
+									{% else %}
+										{{ order.city }}, {{ order.street }}, {{ order.house }} {% if order.apartment %} / {{ order.apartment }} {% endif %}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<th class="text-left">{% trans 'Дата:' %}</th>
+								<td class="text-left">{{ order.created }}</td>
+							</tr>
+						</table>
+					</div>
+					<div class="w3-center w3-margin-bottom">
+						<a href="/user/orders/" class="w3-button w3-red">{% trans 'Закрити' %}</a>
+					</div>
+				</div>
+			</div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+{% endblock content %}

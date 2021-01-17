@@ -1,0 +1,169 @@
+{% load static %}
+{% load i18n %}
+{% load currency %}
+{% load tags %}
+<header>
+    <!-- top Header -->
+    <div id="top-header">
+        <div class="w3-container">
+            <div class="pull-left">
+                <span>{% trans "Вас Вітає ПоліКрам!" %}</span>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{message.tags}}" role="alert">
+                            {{ message |safe }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="pull-right">
+                <ul class="header-top-links">
+                    <li><a href="{% url 'aboutus' %}">{% trans "Про компанію" %}</a></li>
+                    <li><a href="#footer">{% trans 'Контакти' %}</a></li>
+                    <li class="dropdown default-dropdown">
+
+                        <form action="{% url 'selectlanguage' %}" method="post">
+                            {% csrf_token %}
+                            <input name="next" type="hidden" value="{{ redirect_to }}">
+                            <select name="language" onchange="submit()" >
+
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% get_available_languages as LANGUAGES %}
+                                {% get_language_info_list for LANGUAGES as languages %}
+                                {% for language in languages %}
+                                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                        {{ language.name_local }} ({{ language.code }})
+                                    </option>
+                                {% endfor %}
+
+                            </select>
+                            <noscript>
+                                <input type="submit" value="Set" />
+                            </noscript>
+                        </form>
+                    </li>
+                    <li class="dropdown default-dropdown">
+                        <form id="currency_switcher" method="POST" action="{% url 'selectcurrency' %}">
+                            {% csrf_token %}
+                            <select name="currency" onchange="submit()" >
+                                {% for curr in CURRENCIES %}
+                                    <option value="{{ curr.code }}"
+                                            {% ifequal curr.code request.session.currency %}selected="selected"{% endifequal %}>
+                                        {{ curr.symbol }} {{ curr.name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                            <noscript>
+                                <input type="submit" value="Set" />
+                            </noscript>
+
+                        </form>
+                    </li>
+                    <li class="dropdown default-dropdown">
+                        <form id="currency_switcher" method="POST" action="{% url 'savelangcur' %}">
+                            {% csrf_token %}
+                            <input type="submit" class="w3-button w3-black w3-tiny" value="Save" />
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /top Header -->
+
+    <!-- header -->
+    <div id="header">
+        <div class="w3-container">
+            <div class="pull-left">
+            <!-- Search -->
+            <script>
+                $(function() {
+                    $("#query").autocomplete({
+                        source: "/search_auto/",
+                        select: function (event, ui) { //item selected
+                            AutoCompleteSelectHandler(event, ui)
+                        },
+                        minLength: 2,
+                    });
+                });
+                function AutoCompleteSelectHandler(event, ui)
+                {
+                    var selectedObj = ui.item;
+                }
+            </script>
+            <div class="header-search">
+                <form action="{% url 'search' %}" method="get">
+                    {% csrf_token %}
+                    <input id="query" name="query" class="input search-input" type="text" placeholder="Введіть ключові слова">
+                    <select name="catid"  class="input search-categories">
+                        <option value="0">{% trans "Всі категорії" %}</option>
+                        {% get_category as categories %}
+                        {% for category in categories %}
+                        <option value="category.id">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="search-btn"><i class="fa fa-search"></i></button>
+                </form>
+            </div>
+            <!-- /Search -->
+            </div>
+
+            <!-- Cart -->
+            <div class="pull-right" >
+                <ul class="header-btns">
+                    <!-- Account -->
+                    <li class="header-account dropdown default-dropdown">
+                        {% if user.is_authenticated %}
+                            <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+                                <div class="header-btns-icon">
+                                    <img src="{{ request.session.userimage }}" style="height: 35px;">
+                                </div>
+                                <strong class="text-uppercase">{{ request.user }} <i class="fa fa-caret-down"></i></strong>
+                            </div>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="text-uppercase">{% trans "Увійти" %}</a> / <a href="{% url 'signup' %}" class="text-uppercase">{% trans "Реєстрація" %}</a>
+                        {% endif %}
+
+                        <ul class="custom-menu">
+                            <li><a href="{% url 'user_profile' %}"><i class="fa fa-user"></i> {% trans "Кабінет" %}</a></li>
+                            <li><a href="{% url 'user_password' %}"><i class="fa fa-key"></i>{% trans "Змінити пароль" %}</a></li>
+                            <li><a href="{% url 'user_orders' %}"><i class="fa fa-exchange"></i> {% trans "Замовлення" %}</a></li>
+                            <li><a href="{% url 'user_comments' %}"><i class="fa fa-check"></i> {% trans "Мої відгуки" %}</a></li>
+                            <li><a href="{% url 'user_wishlist' %}"><i class="fa fa-heart"></i> {% trans "Лист бажань" %}</a></li>
+                            <li><a href="{% url 'logout' %}"><i class="fa fa-unlock-alt"></i> {% trans "Вийти" %}</a></li>
+                        </ul>
+                    </li>
+                    <!-- /Account -->
+                    <!-- Cart -->
+                    <li class="header-cart dropdown default-dropdown">
+
+                            <a href="{% url 'cart_detail' %}">
+                                <div class="header-btns-icon">
+                                <i class="fa fa-shopping-cart"></i>
+                                    {% load tags %}
+                                    {% cartcount user.id as count %}
+                                <span class="qty">{{ count }}</span>
+                                </div>
+                            </a>
+
+                            <a href="{% url 'user_wishlist' %}">
+                                <div class="header-btns-icon">
+                                <i class="fa fa-heart"></i>
+                                    {% load tags %}
+                                    {% wishlistcount user.id as wishlist_count %}
+                                <span class="qty">{{ wishlist_count }}</span>
+                                </div>
+                            </a>
+
+                    </li>
+                    <!-- /Cart -->
+                </ul>
+            </div>
+            <!-- /Cart -->
+        </div>
+    </div>
+    <!-- header -->
+
+</header>
+

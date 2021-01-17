@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load i18n %}
+
+{% block title %} About Us- {{ setting.title }} {% endblock %}
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block sidebar %} {% include 'sidebar.html' %} {% endblock %}
+
+{% block content %}
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="w3-container">
+			<ul class="breadcrumb">
+                <li><a href="/">{% trans "Головна" %}</a></li>
+                <li class="active">{% trans "Гарантія" %}</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="w3-container">
+			<!-- row -->
+			<div class="w3-row">
+                {{ setting.warranty|safe }}
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+{% endblock content %}

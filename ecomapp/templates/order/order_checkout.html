@@ -1,0 +1,311 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load currency %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %} {% trans 'Оформлення замовлення' %} {% endblock %}
+
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+{% block content %}
+
+<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Головна' %}</a></li>
+                <li class="active">{% trans 'Сторінка замовлень' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+
+ <!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="w3-container">
+            <div class="section-title">
+                <h3 class='title'>{% trans 'Оформлення замовлення' %}</h3>
+            </div>
+            <!-- ORDER LIST -->
+            <table class='w3-table w3-bordered'>
+                <tr>
+                    <td class='w3-center'><strong>{% trans 'Зображення' %}</strong></td>
+                    <td class='w3-center'><strong>{% trans 'Товар' %}</strong></td>
+                    <td class='w3-center'><strong>{% trans 'Кількість' %}</strong></td>
+                    <td class='w3-center'><strong>{% trans 'Ціна загальна' %}</strong></td>
+                </tr>
+                {% for item in cart_item %}
+                <tr>
+                    <td class="w3-center" style="vertical-align: middle;">
+                        <a href="{{ product.get_absolute_url }}">
+				        	{% if item.variant.image_id  > 0 %}
+				        	<img src="{% if item.variant.image %}
+				        		{{ item.variant.image }}
+				        	{% else %}
+				        		{% static 'img/no_image.png' %}
+				        	{% endif %}" alt="" style="height: 80px">
+				        	{% else %}
+    	                    <img src="{% if item.product.image %}
+    	                    	{{ item.product.image.url }}
+    	                    {% else %}
+    	                    	{% static 'img/no_image.png' %}
+    	                    {% endif %}" alt="" style="height: 80px">
+				        	{% endif %}
+    	                </a>
+
+                    </td>
+                    <td class="w3-center" style="vertical-align: middle;">
+                        {% if not item.variant %}
+				        	<a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+				        {% else %}
+				        	<a href="{{ item.product.get_absolute_url }}">{{ item.variant.title }}</a>
+				        {% endif %}
+                    </td>
+                    <td class="w3-center" style="vertical-align: middle;">{{ item.quantity }}</td>
+                    <td class="w3-center" style="vertical-align: middle;">
+                        {{ item.total_price|currency:request.session.currency }} {{ request.session.currency }}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class='w3-center'><strong>{% trans 'Cума:' %} </strong></td>
+                    <td class='w3-center'><strong> {{ cart.get_total|currency:request.session.currency }} {{ request.session.currency }}</strong></td>
+                </tr>
+                <tr>
+                {% if cart.coupon %}
+                    <td></td>
+                    <td></td>
+                    <td class='w3-center'><strong>{% trans 'Знижка:' %} </strong></td>
+                    <td class='w3-center'><strong>- {{ cart.get_discount|currency:request.session.currency }} {{ request.session.currency }}</strong></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class='w3-center'><strong>{% trans 'Разом:' %} </strong></td>
+                    <td class='w3-center'><strong>{{ cart.get_total_after_discount|currency:request.session.currency }} {{ request.session.currency }}</strong></td>
+                </tr>
+                 {% endif %}
+            </table>
+            <br>
+            <!-- PERSONAL INFO -->
+
+            <form action='{% url "order_checkout" %}' method="post">
+                {% csrf_token %}
+                <div class="w3-row">
+
+                        <div class="section-title">
+                            <h5 class="title">{% trans 'Хто отримує замовлення?' %}</h5>
+                        </div>
+                        <div id="order_option" class='w3-padding'>
+                            {{ order_form.order_option }}
+                        </div>
+
+                    <!-- CONTACT INFO -->
+                    <div class="w3-col m6 l6">
+                        <div class="section-title">
+                            <h5 class='title'><i class="fa fa-address-card"></i> {% trans 'Ваші контактні дані' %}</h5>
+                        </div>
+                        <div class="w3-padding">
+                            <input type="text" name="email"  value="{{ profile.email }}" class="input" maxlength="20">
+                        </div>
+                        <div class='w3-padding'>
+                            <input type="text" name="phone"  value="{{ profile.phone }}" class="input" maxlength="20">
+                        </div>
+                        <div class='w3-padding'>
+                            <input type="text" name="last_name"  value="{{ profile.last_name }}" class="input" maxlength="10">
+                        </div>
+                        <div class='w3-padding'>
+                            <input type="text" name="first_name"  value="{{ profile.first_name }}" class="input" maxlength="10">
+                        </div>
+                        <div class='w3-padding'>
+                            <input type="text" name="father_name"  value="{{ profile.father_name }}" class="input" maxlength="10">
+                        </div>
+                        <div class='w3-padding '>
+                            <input type="text" name="city"  value="{{ profile.city }}" class="input" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="w3-col m6 l6">
+                        <div id="title" class="section-title">
+                            <h5 class='title'><i class="fa fa-address-card"></i> {% trans 'Контактні дані отримувача замовлення' %}</h5>
+                        </div>
+                        <div id="email" class="w3-padding">
+                            {{ order_form.email }}
+                        </div>
+                        <div id="phone" class='w3-padding'>
+                            {{ order_form.phone }}
+                        </div>
+                        <div id="last_name" class='w3-padding'>
+                            {{ order_form.last_name }}
+                        </div>
+                        <div id="first_name" class='w3-padding'>
+                            {{ order_form.first_name }}
+                        </div>
+                        <div id="father_name" class='w3-padding'>
+                            {{ order_form.father_name }}
+                        </div>
+                        <div id="city" class='w3-padding '>
+                            {{ order_form.city }}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="w3-row">
+                    <!-- SELECT DELIVERY -->
+
+                    <div class="section-title">
+                        <h5 class="title"><i class="fa fa-truck"></i> {% trans 'Спосіб доставки' %}</h5>
+                    </div>
+                    <div class='w3-padding'>
+                        {{ order_form.delivery_option }}
+                    </div>
+                    <div id="user">
+                        <div id="userstreet" class="w3-col m6 l6 w3-padding">
+                            <input type="text" name="street"  value="{{ profile.street }}" class="input" maxlength="20">
+                        </div>
+                        <div id="userhouse" class='w3-col m3 l3 w3-padding'>
+                            <input type="text" name="house"  value="{{ profile.house }}" class="input" maxlength="20">
+                        </div>
+                        <div id="userapartment" class='w3-col m3 l3 w3-padding'>
+                            <input type="text" name="apartment"  value="{{ profile.apartment }}" class="input" maxlength="10">
+                        </div>
+                        <div id="userwarehouse_number" class='w3-padding'>
+                            <input type="text" name="warehouse_number"  value="{{ profile.warehouse_number }}" class="input" maxlength="10">
+                        </div>
+                    </div>
+                    <div id="other">
+                        <div id="street" class='w3-col m6 l6 w3-padding'>
+                            {{ order_form.street }}
+                        </div>
+                        <div id="house" class='w3-col m3 l3 w3-padding'>
+                            {{ order_form.house }}
+                        </div>
+                        <div id="apartment" class='w3-col m3 l3 w3-padding'>
+                            {{ order_form.apartment }}
+                        </div>
+                        <div id="warehouse_number" class='w3-padding'>
+                            {{ order_form.warehouse_number }}
+                        </div>
+                    </div>
+                </div>
+                    <!-- PAYMENT OPTION -->
+                    <div class="section-title">
+                        <h5 class="title"><i class="fa fa-credit-card"></i> {% trans 'Спосіб оплати' %}</h5>
+                    </div>
+                    <div class='w3-padding'>
+                        {{ order_form.payment_option }}
+                    </div>
+                    <!-- COMMENTS-->
+                    <div class="section-title">
+                        <h5 class="title"><i class="fa fa-comment"></i> {% trans 'Коментар до замовлення' %}</h5>
+                    </div>
+                    <div class=" w3-padding">
+                        {{ order_form.comments }}
+                    </div>
+                    <div class="w3-padding">
+                        <input type='submit' class='w3-button w3-green pull-right' value='{% trans "Далі" %}'>
+                    </div>
+            </form>
+        </div>
+        <!-- /container -->
+</div>
+ <!-- /section -->
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script>
+	$(document).ready(function(){
+	    $('#title').css('display', 'none')
+		$('#email').css('display', 'none')
+		$('#phone').css('display', 'none')
+		$('#last_name').css('display', 'none')
+		$('#first_name').css('display', 'none')
+		$('#father_name').css('display', 'none')
+		$('#city').css('display', 'none')
+        $('#user').css('display', 'block')
+        $('#other').css('display', 'none')
+		$('#id_order_option').on('click', function(){
+			order_option = $(this).val()
+			if(order_option == 'user'){
+			    $('#title').css('display', 'none')
+				$('#email').css('display', 'none')
+				$('#phone').css('display', 'none')
+				$('#last_name').css('display', 'none')
+				$('#first_name').css('display', 'none')
+				$('#father_name').css('display', 'none')
+				$('#city').css('display', 'none')
+				$('#user').css('display', 'block')
+                $('#other').css('display', 'none')
+			}else{
+			    $('#title').css('display', 'block')
+				$('#email').css('display', 'block')
+				$('#phone').css('display', 'block')
+				$('#last_name').css('display', 'block')
+				$('#first_name').css('display', 'block')
+				$('#father_name').css('display', 'block')
+				$('#city').css('display', 'block')
+				$('#user').css('display', 'none')
+                $('#other').css('display', 'block')
+
+			}
+		})
+	})
+
+</script>
+<script>
+	$(document).ready(function(){
+		$('#userwarehouse_number').css('display', 'block')
+		$('#userstreet').css('display', 'none')
+		$('#userhouse').css('display', 'none')
+		$('#userapartment').css('display', 'none')
+		$('#id_delivery_option').on('click', function(){
+			delivery_option = $(this).val()
+			if(delivery_option == 'delivery'){
+				$('#userwarehouse_number').css('display', 'none')
+				$('#userstreet').css('display', 'block')
+				$('#userhouse').css('display', 'block')
+				$('#userapartment').css('display', 'block')
+			}else{
+				$('#userwarehouse_number').css('display', 'block')
+				$('#userstreet').css('display', 'none')
+				$('#userhouse').css('display', 'none')
+				$('#userapartment').css('display', 'none')
+
+			}
+		})
+	})
+
+</script>
+<script>
+	$(document).ready(function(){
+		$('#warehouse_number').css('display', 'block')
+		$('#street').css('display', 'none')
+		$('#house').css('display', 'none')
+		$('#apartment').css('display', 'none')
+		$('#id_delivery_option').on('click', function(){
+			delivery_option = $(this).val()
+			if(delivery_option == 'delivery'){
+				$('#warehouse_number').css('display', 'none')
+				$('#street').css('display', 'block')
+				$('#house').css('display', 'block')
+				$('#apartment').css('display', 'block')
+			}else{
+				$('#warehouse_number').css('display', 'block')
+				$('#street').css('display', 'none')
+				$('#house').css('display', 'none')
+				$('#apartment').css('display', 'none')
+			}
+		})
+	})
+
+</script>
+{% endblock content %}
+
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ order_form.media }}
+
+{% endblock %}

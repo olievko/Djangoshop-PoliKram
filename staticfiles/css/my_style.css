@@ -1,0 +1,454 @@
+/*----------------------------*\
+	Typography
+\*----------------------------*/
+
+/*----------------------------*\
+	Inputs
+\*----------------------------*/
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 0px 15px;
+  border: none;
+  background-color: transparent;
+  -webkit-box-shadow: 0px 0px 0px 1px #DADADA inset, 0px 0px 0px 5px transparent;
+  box-shadow: 0px 0px 0px 1px #DADADA inset, 0px 0px 0px 5px transparent;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.input:focus {
+  -webkit-box-shadow: 0px 0px 0px 1px #F8694A inset, 0px 0px 0px 0px #F8694A;
+  box-shadow: 0px 0px 0px 1px #F8694A inset, 0px 0px 0px 0px #F8694A;
+}
+
+textarea.input {
+  padding: 15px;
+}
+
+.input-checkbox .caption {
+  max-height: 0;
+  overflow: hidden;
+  -webkit-transition: 0.3s max-height;
+  transition: 0.3s max-height;
+}
+
+.input-checkbox>label {
+  color: #30323A;
+}
+
+.input-checkbox input[type="checkbox"]:checked+label+.caption, .input-checkbox input[type="radio"]:checked+label+.caption {
+  max-height: 800px;
+}
+
+/*=========================================================
+	06 -> PRODUCT
+===========================================================*/
+
+.product .product-old-price {
+  color: #F8694A;
+  font-size: 60%;
+}
+
+.product .product-rating {
+  display: inline-block;
+}
+
+.product .product-rating>i {
+  color: #FFB656;
+}
+
+.product .product-rating>i.empty {
+  color: #DADADA;
+}
+
+
+/*----------------------------*\
+	Single product
+\*----------------------------*/
+
+.product.product-single {
+  border: 1px solid grey;
+  margin-top: 5px;
+  margin-right: 5px;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.product.product-single:hover {
+  -webkit-box-shadow: 0px 6px 10px -6px rgba(0, 0, 0, 0.175);
+  box-shadow: 0px 6px 10px -6px rgba(0, 0, 0, 0.175);
+  -webkit-transform: translateY(-4px);
+  -ms-transform: translateY(-4px);
+  transform: translateY(-4px);
+}
+
+.product.product-single .product-thumb {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.product.product-single .product-thumb>img {
+  width: 100%;
+}
+
+.product.product-single .product-thumb:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFF;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 0;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.product.product-single:hover .product-thumb:after {
+  opacity: 0.7;
+  visibility: visible;
+}
+
+
+.product.product-single .product-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.product.product-single .product-label>span {
+  display: block;
+}
+
+.product.product-single .product-body {
+  padding: 15px;
+}
+
+.product.product-single .product-price {
+  display: inline-block;
+  font-size: 22px;
+  color: grey;
+}
+
+.product.product-single .product-rating {
+  float: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.product.product-single .product-name {
+  font-size: 16px;
+}
+
+.product.product-single .product-btns {
+  margin-top: 20px;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.product.product-single:hover .product-btns {
+  opacity: 1;
+  visibility: visible;
+}
+
+/*=========================================================
+	08 -> PRODUCT DETAILS PAGE
+===========================================================*/
+
+/*----------------------------*\
+	Product view
+\*----------------------------*/
+
+#product-main-view .slick-arrow {
+  opacity: 0;
+}
+
+#product-main-view:hover .slick-arrow {
+  opacity: 1;
+}
+
+#product-view {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+#product-view .product-view.slick-slide {
+  opacity: 0.2;
+}
+
+#product-view .product-view.slick-slide.slick-current {
+  opacity: 1;
+  -webkit-box-shadow: 0px 0px 0px 2px #F8694A inset;
+  box-shadow: 0px 0px 0px 2px #F8694A inset;
+}
+
+#product-view .product-view {
+  padding: 7.5px;
+}
+
+.product-view>img {
+  width: 100%;
+}
+
+/*----------------------------*\
+	Product details
+\*----------------------------*/
+
+.product.product-details .product-name {
+  margin-top: 15px;
+}
+
+.product.product-details .product-rating {
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+
+.product.product-details .product-options {
+  padding-top: 10px;
+  margin-bottom: 15px;
+  border-top: 1px solid #DADADA;
+  margin-top: 15px;
+}
+
+.product-options .size-option {
+  margin-bottom: 15px;
+}
+
+.size-option>li {
+  display: inline-block;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  vertical-align: top;
+}
+
+.size-option>li:last-child {
+  margin-right: 0px;
+}
+
+.size-option>li>a {
+  display: block;
+  border: 1px solid #DADADA;
+  font-weight: 700;
+  padding: 2px 7px 0px 8px;
+}
+
+.size-option>li.active a {
+  color: #F8694A;
+  border-color: #F8694A;
+}
+
+.color-option>li {
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  vertical-align: top;
+}
+
+.color-option>li:last-child {
+  margin-right: 0px;
+}
+
+.color-option>li>a {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
+.color-option>li.active a {
+  -webkit-box-shadow: 0px 0px 0px 2px #FFF, 0px 0px 0px 3px #F8694A;
+  box-shadow: 0px 0px 0px 2px #FFF, 0px 0px 0px 3px #F8694A;
+}
+
+.product.product-details .qty-input {
+  display: inline-block;
+}
+
+.product.product-details .qty-input .input {
+  width: 90px;
+}
+
+/*----------------------------*\
+	Product tab
+\*----------------------------*/
+
+.product-tab {
+  margin-top: 30px;
+}
+
+.product-tab .tab-nav {
+  border-bottom: 1px solid #DADADA;
+  margin-bottom: 30px;
+}
+
+.product-tab .tab-nav li {
+  display: inline-block;
+}
+
+.product-tab .tab-nav li+li {
+  margin-left: 30px;
+}
+
+.product-tab .tab-nav li a {
+  display: block;
+  padding: 15px 0px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.product-tab .tab-nav li.active {
+  position: relative;
+}
+
+.product-tab .tab-nav li.active a {
+  color: #F8694A;
+}
+
+.product-tab .tab-nav li.active a:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1.5px;
+  height: 3px;
+  width: 30px;
+  background-color: #F8694A;
+}
+
+/*-- Style the tab --*/
+
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/*-- reviews --*/
+
+.single-review {
+  margin-bottom: 30px;
+}
+
+.single-review .review-heading>div {
+  display: inline-block;
+}
+
+.single-review .review-heading>div+div {
+  margin-left: 10px;
+}
+
+.single-review .review-rating {
+  display: inline-block;
+}
+
+.single-review .review-rating>i {
+  color: #FFB656;
+}
+
+.single-review .review-rating>i.empty {
+  color: #DADADA;
+}
+
+.single-review .review-body {
+  margin-top: 10px;
+}
+
+.reviews-pages li {
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.reviews-pages li a {
+  display: block;
+  min-width: 10px;
+  text-align: center;
+}
+
+.reviews-pages li.active {
+  color: #F8694A;
+}
+
+/*-- review form --*/
+
+.review-form textarea.w3-input {
+  height: 190px;
+}
+
+.review-form .input-rating .stars {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.review-form .input-rating .stars input[type="radio"] {
+  display: none;
+}
+
+.review-form .input-rating .stars>label {
+  float: right;
+  cursor: pointer;
+  padding: 0px 3px;
+  margin: 0px;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.review-form .input-rating .stars>label:hover, .review-form .input-rating .stars>label:hover~label {
+  -webkit-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  transform: scale(1.5);
+}
+
+.review-form .input-rating .stars>label:before {
+  content: "\f006";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  color: #DADADA;
+  font-size: 14px;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.review-form .input-rating .stars>label:hover:before, .review-form .input-rating .stars>label:hover~label:before {
+  content: "\f005";
+  color: #FFB656;
+}
+
+.review-form .input-rating .stars>input:checked label:before, .review-form .input-rating .stars>input:checked~label:before {
+  content: "\f005";
+  color: #FFB656;
+}

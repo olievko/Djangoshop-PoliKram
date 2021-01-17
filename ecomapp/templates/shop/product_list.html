@@ -1,0 +1,85 @@
+{% load static %}
+{% load i18n %}
+{% load currency %}
+{% load crispy_forms_tags %}
+
+<link rel="stylesheet" href="{% static 'css/my_style.css' %}">
+
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="w3-container">
+        <!-- row -->
+        <div class="w3-row">
+            <!-- section title -->
+            <div class="w3-col m12">
+                <div class="section-title">
+                    <h4 class="title">{% trans 'Гарячі новинки' %}</h4>
+                </div>
+            </div>
+            {% for product in products %}
+                <div class="w3-col l3 s6">
+                    <div class="product product-single">
+                        <a href="{{ product.get_absolute_url }}" >
+                        <div class="product-thumb">
+                            <img src="{% if product.image %}
+                                        {{ product.image.url }}
+                                      {% else %}
+                                        {% static 'img/no_image.png' %}
+                                      {% endif %}" style="width:100%">
+                        </div>
+                        </a>
+                            <div class="product-body">
+                                <a href="{{ product.get_absolute_url }}" >
+                                <h3 class="product-price">
+                                    {{ product.price|currency:request.session.currency }} {{ request.session.currency }}
+                                </h3>
+                                {% if product.old_price %}
+                                <h3 class="product-old-price pull-right"><del >{{ product.old_price|currency:request.session.currency }} {{ request.session.currency }}</del></h3>
+                                {% endif %}
+                                <div class="product-rating">
+                                    <i class="fa fa-star{% if product.avaregereview < 1 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 2 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 3 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 4 %}-o empty{% endif %}"></i>
+                                    <i class="fa fa-star{% if product.avaregereview < 5 %}-o empty{% endif %}"></i>
+                                    {{ product.avaregereview |stringformat:".2f"}}
+                                </div>
+                                <h2 class="product-name"> {{ product.name|truncatewords:4 }}</h2>
+                                </a>
+                                {% if product.stock > 0 %}
+                                    <p><i class="fa fa-check" style="color:green"></i><strong> {% trans 'В наявності' %}</strong></p>
+                                {% else %}
+                                    <p><i class="fa fa-ban" style="color:red;"></i><strong> {% trans 'Під замовлення' %}</strong></p>
+                                {% endif %}
+                                {% if product.variant == 'None' and product.stock > 0 %}
+                                    <form action="{% url 'add_to_cart' product.id %}" method="post">
+                                        {% csrf_token %}
+                                            <input class="input" style="width:90px;" name="quantity" type="number" value="1" min="1" max="{{ product.stock }}">
+                                            <button type="submit" class="primary-btn add-to-cart">
+                                                <i class="fa fa-shopping-cart "></i>
+                                            </button>
+                                        <a href="/user/addtowishlist/{{ product.id }}" class="main-btn icon-btn"><i class="fa fa-heart"></i></a>
+
+                                    </form>
+                                {% else %}
+                                    <a href="{% url 'product_detail' product.id product.slug %}" class="primary-btn add-to-cart">
+                                        <i class="fa fa-shopping-cart"></i> {% trans 'Деталі' %}
+                                    </a>
+                                    <a href="/user/addtowishlist/{{ product.id }}" class="main-btn icon-btn"><i class="fa fa-heart"></i></a>
+                                {% endif %}
+
+                            </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>{% trans 'Немає результатів за вашим запитом.' %}</p>
+            {% endfor %}
+        </div>
+        <!-- /row -->
+        <!-- Pagination -->
+        {% include "includes/pagination.html" with page=products %}
+    </div>
+    <!-- /container -->
+</div>
+<!-- /section -->

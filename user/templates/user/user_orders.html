@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load currency %}
+{% load static %}
+
+{% block title %} {% trans 'Мої замовлення' %} {% endblock %}
+
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block content %}
+<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Головна' %}</a></li>
+                <li class="active">{% trans 'Історія замовлень' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+<!-- section -->
+<div class="section">
+	<!-- container -->
+	<div class="w3-container">
+		<!-- row -->
+		<div class="w3-row">
+			<div class="w3-col m3">
+				{% include "user/user_panel.html" %}
+			</div>
+			<div class="w3-col m9">
+				<div class="section-title">
+					<h3 class="title">{% trans 'Кількість замовлень' %} - {{ count }}</h3>
+				</div>
+				<table class='w3-table w3-bordered'>
+					<tr>
+						<td class='w3-center'>{% trans 'Номер замовлення' %}</td>
+						<td class='w3-center'>{% trans 'Код замовлення' %}</td>
+						<td class='w3-center'>{% trans 'Дата' %}</td>
+						<td class='w3-center'>{% trans 'Статус' %}</td>
+						<td class='w3-center'>{% trans 'Сума' %}</td>
+						<td class='w3-center'>{% trans 'Деталі' %}</td>
+					</tr>
+					{% for order in orders %}
+					<tr>
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>{{ order.id }}</td>
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>{{ order.code }}</td>
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>{{ order.created }}</td>
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>{{ order.status }}</td>
+						{% if order.coupon %}
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>{{ order.get_total_cost_after_discount|currency:request.session.currency }} {{ request.session.currency }}</td>
+						{% else %}
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>{{ order.get_total_cost|currency:request.session.currency }} {{ request.session.currency }}</td>
+						{% endif %}
+						<td class='w3-center' style='padding-top: 20px; padding-bottom: 20px;'>
+						<a href="/user/order-detail/{{ order.id }}" class="w3-button w3-black">{% trans 'Деталі' %}</a>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>
+<!-- /section -->
+
+{% endblock content %}

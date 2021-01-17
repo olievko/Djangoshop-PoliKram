@@ -1,0 +1,78 @@
+.header__search {
+    display: none;
+    position: absolute;
+    top: var(--px168);
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - var(--px140));
+    overflow-y: scroll;
+    background-color: white;
+    box-shadow: 0px var(--px8) var(--px16) rgba(0, 0, 0, 0.15);
+    z-index: 9;
+    scrollbar-width: none;
+}
+@media(max-width: 960px) {
+    .header__search {
+        top: var(--px142);
+    }
+}
+
+
+.header__search.active {
+    display: block;
+}
+
+.header__search input {
+    width: calc(100% - var(--px36));
+    display: block;
+    padding: var(--px12) var(--px16);
+    border: var(--px2) solid #ededed;
+    border-radius: var(--px4);
+    margin-top: var(--px16);
+    margin-bottom: var(--px16);
+}
+
+/* SEACRH */
+#search_output_header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: calc(100vh - var(--px140));
+}
+#search_output_header ul {
+    width: 100%;
+    padding-bottom: var(--px24);
+}
+#search_output_header ul.products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: var(--px24);
+    max-height: 56vh;
+    height: auto;
+    overflow-y: scroll;
+}
+#search_output_header ul.brands {
+    display: block;
+}
+@media(max-width: 1200px) {
+    #search_output_header ul.products {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+}
+
+
+#search_output_header ul.products li {
+    display: grid;
+    grid-template-columns: var(--px64) 1fr;
+    grid-gap: var(--px24);
+}
+
+#search_output_header ul.products li img.image {
+    width: var(--px64);
+    height: var(--px64);
+    object-fit: contain;
+    object-position: center;
+   
+}
+

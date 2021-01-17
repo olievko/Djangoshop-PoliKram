@@ -1,0 +1,19 @@
+{% load i18n %}
+{% load tags %}
+
+<div class="billing-details">
+    <div class="section-title">
+        <h3 class="title">{% trans 'Меню' %}</h3>
+    </div>
+    <div class="aside">
+    <ul class="list-links">
+        <li><a href="/user">{% trans 'Мій Профіль' %}</a></li>
+        <li>
+            <a href="/user/orders">{% trans 'Замовлення' %}</a>
+        </li>
+        <li><a href="/user/comments">{% trans 'Мої Відгуки' %}</a></li>
+        <li><a href="/user/wishlist">{% trans 'Лист Бажань' %}</a></li>
+        <li><a href="/user/logout">{% trans 'Вийти' %}</a></li>
+    </ul>
+</div>
+</div>

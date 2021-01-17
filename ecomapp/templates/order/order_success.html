@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %} {% trans 'Замовлення завершено' %} {% endblock %}
+
+{% block description %} {{ setting.description }} {% endblock %}
+{% block keywords %} {{ setting.keywords }} {% endblock %}
+
+{% block content %}
+
+
+<!-- BREADCRUMB -->
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Головна' %}</a></li>
+                <li class="active">{% trans 'Замовлення завершено' %}</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /BREADCRUMB -->
+<!-- section -->
+    <div class="section">
+        <!-- container -->
+        <div class="w3-container">
+            <!-- row -->
+            <div class="w3-row">
+                <div class="w3-col-m12">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'Замовлення завершено' %}</h3>
+                    </div>
+                    <h4> {{ user.first_name }} {{  user.last_name }}</h4>
+                    <hr>
+                    <h5>{% trans 'Ваше замовлення прийнято в обробку.' %}</h5>
+                    <h5>{% trans 'Номер вашого замовлення:' %} {{ ordercode }}</h5>
+				    <h5>{% trans "Незабаром, наші менеджери з Вами зв'яжуться для підтвердження замовлення" %}</h5>
+                    <h5>{% trans "Щиро дякую Вам!" %}</h5>
+                    <a href='/' class='w3-button w3-green'>{% trans 'На головну' %}</a>
+
+                </div>
+			</div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /section -->
+
+{% endblock content %}

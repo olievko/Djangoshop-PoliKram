@@ -1,0 +1,24 @@
+@media(max-width: 0px) {
+    .header { display: none !important;}
+}
+/* GLOBAL */
+#language_select {
+    position: relative;
+    display: inline-block;
+    width: var(--px48);
+    height: var(--px24);
+    border: 0px solid grey;
+    border-radius: var(--px4);
+}
+#menu {
+    cursor: pointer;
+}
+#menu ul li a {
+    display: flex;
+    align-items: center;
+}
+#menu ul li a img {
+    width: var(--px24);
+    height: var(--px24);
+    margin-right: var(--px16);
+}

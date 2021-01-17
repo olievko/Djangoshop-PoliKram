@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="w3-col l6 s12">
+    <div id="product-main-view">
+        {% if variant.image_id > 0 %}
+        <div class="product-view ">
+            <img src="{{ variant.image }}" alt="" style="height: 400px">
+        </div>
+        {% else %}
+        <div class="product-view">
+            <img src="{{ product.image.url }}" alt="" style="height: 400px">
+        </div>
+        {% endif %}
+
+        {% for rs in images %}
+        <div  class="product-view active">
+            <img src="{{ rs.image_file.url }}" alt="" style="height: 400px">
+        </div>
+        {% endfor %}
+    </div>
+    <div id="product-view">
+        {% for rs in images %}
+        <div class="product-view w3-margin">
+            <img src="{{ rs.image_file.url }}" alt="" >
+        </div>
+        {% endfor %}
+    </div>
+</div>
