@@ -32,7 +32,7 @@ urlpatterns = [
 
 
 urlpatterns += i18n_patterns(
-    path('admin/', admin.site.urls),
+    path('entrance-admin/', admin.site.urls),
     path('', include('ecomapp.urls')),
     path('user/',   include('user.urls')),
     path('home/', include('home.urls')),
